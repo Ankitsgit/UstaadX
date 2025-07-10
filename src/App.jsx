@@ -7,10 +7,14 @@ import UserDashboard from './pages/UserDashboard';
 import Chat from './pages/Chat';
 import Profile from './pages/Profile';
 import Bookings from './pages/Bookings';
+import Login from './components/Login/Login';
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
+      <Route path="/login" element={<Login />} />
+
+
       {/* <Route path="/dashboard" element={<Dashboard />} /> */}
 
       {/* Nested Routes for UserDashboard */}
