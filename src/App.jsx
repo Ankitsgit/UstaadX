@@ -5,18 +5,24 @@ import Landing from './pages/Landing';
 import Home from './components/UserDashboard.jsx/Home';
 import UserDashboard from './pages/UserDashboard';
 import Chat from './pages/Chat';
+import Profile from './pages/Profile';
+import Bookings from './pages/Bookings';
 function App() {
   return (
-      <Routes>
-        <Route path="/" element={<Landing/>} />
-        {/* <Route path="/Dashboard" element={<Dashboard/>} /> */}
+    <Routes>
+      <Route path="/" element={<Landing />} />
+      {/* <Route path="/dashboard" element={<Dashboard />} /> */}
 
-        <Route path="/User" element={<UserDashboard/>}>
-          <Route path="Home" element={<Home/>} />
-          <Route path="chat" element={<Chat/>} />
-        </Route>
+      {/* Nested Routes for UserDashboard */}
+      <Route path="/user" element={<UserDashboard />}>
+        <Route index element={<Home />} />
+        <Route path="Chat" element={<Chat />} />
+        <Route path="Profile" element={<Profile />} />
+        <Route path="Bookings" element={<Bookings />} />
 
-      </Routes>
+
+      </Route>
+    </Routes>
   )
 }
 
