@@ -1,6 +1,6 @@
 import { ArrowRight, Play } from "lucide-react";
 import { Button } from "../Ui/Button";
-// import heroImage from "@/assets/hero-illustration.jpg";
+import hero from "../../assets/hero.png"
 
 const Hero = () => {
   return (
@@ -63,11 +63,11 @@ const Hero = () => {
         {/* Right content - Hero Image */}
         <div className="relative animate-slide-in-right">
           <div className="relative">
-            {/* <img 
-              src={heroImage} 
+            <img 
+              src={hero} 
               alt="UstaadX Skill Exchange Platform" 
               className="w-full h-auto rounded-3xl shadow-hover object-cover"
-            /> */}
+            />
             {/* Floating skill badges */}
             <div className="absolute -top-4 -left-4 glass-card px-3 py-2 rounded-xl float">
               <span className="text-sm font-medium">💻 Coding</span>
