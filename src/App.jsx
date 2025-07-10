@@ -8,11 +8,15 @@ import Chat from './pages/Chat';
 import Profile from './pages/Profile';
 import Bookings from './pages/Bookings';
 import Login from './components/Login/Login';
+import Register from './components/Register/Register';
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/Register" element={<Register />} />
+
+
 
 
       {/* <Route path="/dashboard" element={<Dashboard />} /> */}

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 // import { useAuth } from '../../contexts/AuthContext';
 import { LogIn, Mail, Lock, Eye, EyeOff } from 'lucide-react';
-
+import Register from '../Register/Register';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -100,7 +100,7 @@ const Login = () => {
 
             <div className="text-center">
               <Link
-                to="/register"
+                to="/Register"
                 className="text-primary hover:text-primary/80 font-medium"
               >
                 Don't have an account? Sign up
