@@ -1,25 +1,26 @@
 import React from 'react'
-import Header from '../components/Landing/Header';
-import HeroSection from '../components/Landing/HeroSection';
-import FeaturedSkills from '../components/Landing/FeaturedSkills';
+import Navbar from '../components/Landing/Navbar';
+import Hero from '../components/Landing/Hero';
+import HowItWorks from '../components/Landing/HowItWorks';
+import Features from '../components/Landing/Features';
+import UIPreview from '../components/Landing/UIPreview';
+import Testimonials from '../components/Landing/Testimonials';
+import CTABanner from '../components/Landing/CTABanner';
 import Footer from '../components/Landing/Footer';
 
-function landing() {
+const Landing = () => {
   return (
-    <div className="relative flex size-full min-h-screen flex-col bg-slate-50 overflow-x-hidden font-[Manrope]">
-      <div className="layout-container flex h-full grow flex-col">
-        <Header />
-        <main className="px-40 flex flex-1 justify-center py-5">
-          <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
-            <HeroSection />
-            <FeaturedSkills />
-          </div>
-        </main>
-        <Footer />
-      </div>
+    <div className="min-h-screen">
+      <Navbar />
+      <Hero />
+      <HowItWorks />
+      <Features />
+      <UIPreview />
+      <Testimonials />
+      <CTABanner />
+      <Footer />
     </div>
+  );
+};
 
-  )
-}
-
-export default landing
+export default Landing;

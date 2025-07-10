@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "../Ui/Button";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 const CTABanner = () => {
