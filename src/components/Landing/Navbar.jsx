@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Button } from "../Ui/Button";
 import { Menu, X } from "lucide-react";
-
+import {NavLink} from "react-router-dom"
+import Login from "../Login/Login";
+import Register from "../Register/Register";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -40,10 +42,15 @@ const Navbar = () => {
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             <Button variant="ghost" className="text-muted-foreground hover:text-primary">
-              Login
+              <NavLink to="Login" className={({ isActive }) => isActive ? "text-green-700" : ""}>
+                Login
+              </NavLink>              
+  
             </Button>
             <Button className="btn-primary">
-              Sign Up
+              <NavLink to="Register" className={({ isActive }) => isActive ? "text-green-700" : ""}>
+                Sign Up
+              </NavLink> 
             </Button>
           </div>
 
