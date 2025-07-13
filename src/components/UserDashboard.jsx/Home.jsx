@@ -15,7 +15,6 @@
 //     </div>
 //   );
 // }
-
 import { useState } from 'react';
 import { Search, Filter, Heart, X, MapPin, Star, Clock } from 'lucide-react';
 
@@ -84,8 +83,8 @@ const Home = () => {
   };
 
   return (
+    
     <div className="p-6 max-w-7xl mx-auto">
-      {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Discover Skills</h1>
         <p className="text-gray-600">Find your perfect skill exchange match</p>

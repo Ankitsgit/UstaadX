@@ -1,3 +1,4 @@
+import {Camera} from "lucide-react"
 const ProfilePicture = ({ user, isEditing }) => (
   <div className="relative inline-block">
     <div className="w-32 h-32 mx-auto rounded-full overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600">

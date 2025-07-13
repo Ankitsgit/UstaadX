@@ -1,3 +1,4 @@
+import {X} from "lucide-react"
 const SkillTag = ({ skill, onRemove, color = 'green' }) => (
   <div className={`flex items-center bg-${color}-100 text-${color}-800 px-3 py-1 rounded-full text-sm`}>
     {skill}

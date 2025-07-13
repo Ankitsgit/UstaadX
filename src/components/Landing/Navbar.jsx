@@ -4,13 +4,14 @@ import { Menu, X } from "lucide-react";
 import {NavLink} from "react-router-dom"
 import Login from "../Login/Login";
 import Register from "../Register/Register";
+import Home from "../UserDashboard.jsx/Home";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
     { name: "How it Works", href: "#how-it-works" },
     { name: "Features", href: "#features" },
-    { name: "Browse Skills", href: "#skills" },
+    { name: "Browse Skills", href: "Home" },
     { name: "About", href: "#about" }
   ];
 
@@ -91,7 +92,9 @@ const Navbar = () => {
           </div>
         )}
       </div>
+
     </nav>
+   
   );
 };
 

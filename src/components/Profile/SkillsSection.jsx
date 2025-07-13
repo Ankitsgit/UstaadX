@@ -1,4 +1,5 @@
 import SkillTag from './SkillTag';
+import {Plus} from "lucide-react"
 
 const SkillsSection = ({ title, skills, newSkill, setNewSkill, addSkill, removeSkill, isEditing, color = 'green' }) => (
   <div className="bg-white rounded-xl shadow-sm p-6">
