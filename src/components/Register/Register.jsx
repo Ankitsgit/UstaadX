@@ -1,28 +1,55 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-// import { useAuth } from '../../contexts/AuthContext';
+
+
+import { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import { UserPlus, Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
+  const { register } = useAuth();
+
+  const navigate = useNavigate();
+
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-//   const { register } = useAuth();
+
+  const nameInputRef = useRef(null);
+
+  useEffect(() => {
+    nameInputRef.current?.focus();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (password !== confirmPassword) {
-      alert('Passwords do not match');
+      toast.error('Passwords do not match');
       return;
     }
+
     setLoading(true);
     try {
       await register(email, password, name);
+      toast.success('🎉 Account created successfully');
+      setTimeout(() => navigate('/login'), 1500); // slight delay for toast visibility
+      // Clear form
+      setName('');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+
+          // Redirect after delay
+      setTimeout(() => navigate('/login'), 1500);
     } catch (error) {
       console.error('Registration failed:', error);
+      toast.error(error?.response?.data?.message || 'Something went wrong');
     } finally {
       setLoading(false);
     }
@@ -30,7 +57,7 @@ const Register = () => {
 
   return (
     <div className="min-h-screen flex">
-      {/* Left side - Illustration */}
+      {/* Left Illustration */}
       <div className="hidden lg:flex flex-1 bg-gradient-to-br from-secondary to-secondary/80 items-center justify-center p-12">
         <div className="text-center text-secondary-foreground">
           <div className="mb-8">
@@ -47,7 +74,7 @@ const Register = () => {
         </div>
       </div>
 
-      {/* Right side - Form */}
+      {/* Right Form */}
       <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div className="text-center">
@@ -55,9 +82,7 @@ const Register = () => {
               <span className="text-2xl font-bold text-secondary-foreground">SS</span>
             </div>
             <h2 className="text-3xl font-bold text-foreground">Create your account</h2>
-            <p className="mt-2 text-muted-foreground">
-              Join SkillSwap and start exchanging knowledge today
-            </p>
+            <p className="mt-2 text-muted-foreground">Join SkillSwap and start exchanging knowledge today</p>
           </div>
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-6">
@@ -69,6 +94,7 @@ const Register = () => {
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
                   <input
+                    ref={nameInputRef}
                     id="name"
                     type="text"
                     required
@@ -158,10 +184,7 @@ const Register = () => {
             </button>
 
             <div className="text-center">
-              <Link
-                to="/login"
-                className="text-secondary hover:text-secondary/80 font-medium"
-              >
+              <Link to="/login" className="text-secondary hover:text-secondary/80 font-medium">
                 Already have an account? Sign in
               </Link>
             </div>
