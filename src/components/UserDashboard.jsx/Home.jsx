@@ -145,7 +145,7 @@ const Home = () => {
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
           <div className="relative h-96">
             <img
-              src={currentMatch.profilePicture || 'https://via.placeholder.com/400'}
+              src={currentMatch.profilePicture || "https://i.pravatar.cc/100"}
               alt={currentMatch.name}
               className="w-full h-full object-cover"
             />

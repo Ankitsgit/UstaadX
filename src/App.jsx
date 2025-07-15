@@ -66,6 +66,7 @@ function App() {
         <Route path="/user" element={<UserDashboard />}>
           <Route index element={<Home />} />
           <Route path="chat" element={<Chat />} />
+          <Route path="chat/:partnerId" element={<Chat />} />
           <Route path="profile" element={<Profile />} />
           <Route path="booking" element={<Bookings />} />
         </Route>

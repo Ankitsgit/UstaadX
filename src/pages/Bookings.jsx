@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate ,Link, NavLink } from 'react-router-dom';
 import axios from 'axios';
 import {
   Calendar,
@@ -237,7 +237,6 @@ const tabs = [
                     {booking.status === 'pending' && isReceiver && (
                      <div className="flex flex-col space-y-2">
                         <button
-                          //  onClick={() => handleResponse(booking._id, 'accepted')}
                                 onClick={() => {
                                    setModalBooking(booking);
                                    setModalAction('accepted');
@@ -247,7 +246,6 @@ const tabs = [
                        ✅ Accept
                       </button>
                       <button
-                      //  onClick={() => handleResponse(booking._id, 'rejected')}
                             onClick={() => {
                                 setModalBooking(booking);
                                 setModalAction('rejected');
@@ -258,17 +256,17 @@ const tabs = [
                       </button>
                    </div>
                    )}
-                   {/* {booking.status === 'accepted' && (
-                     <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">
-                    💬 Chat
-                    </button>
-                    )} */}
                     {booking.status === 'accepted' && (
                       <button
                          onClick={() => {
                          const partnerId = isSender ? booking.toUser._id : booking.fromUser._id;
-                          navigate(`/chat/${partnerId}`);
-                          // navigate(`user/chat`);
+                        
+                          navigate(`/user/chat/${partnerId}`);
+
+      
+                          // <NavLink to="Chat" className={({ isActive }) => isActive ? "text-green-700" : ""}>
+                          //  Chat
+                          // </NavLink>
 
                     }}
                     className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
