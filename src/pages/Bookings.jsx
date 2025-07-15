@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import {
   Calendar,
   Clock,
@@ -8,65 +10,52 @@ import {
   XCircle,
   AlertCircle,
 } from 'lucide-react';
-
-const Booking = [
-  {
-    id: '1',
-    partnerName: 'Sarah Chen',
-    partnerAvatar:
-      'https://images.unsplash.com/photo-1494790108755-2616b612f2b5?w=400&h=400&fit=crop&crop=face',
-    skill: 'Python Programming',
-    date: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
-    time: '2:00 PM',
-    duration: '1 hour',
-    status: 'upcoming',
-    type: 'virtual',
-    notes: 'Focus on object-oriented programming concepts',
-  },
-  {
-    id: '2',
-    partnerName: 'Marcus Rodriguez',
-    partnerAvatar:
-      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face',
-    skill: 'Guitar Lessons',
-    date: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
-    time: '6:00 PM',
-    duration: '1.5 hours',
-    status: 'upcoming',
-    type: 'in-person',
-    location: 'Central Park Music Area',
-    notes: 'Bring your acoustic guitar',
-  },
-  {
-    id: '3',
-    partnerName: 'Emma Thompson',
-    partnerAvatar:
-      'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
-    skill: 'Photography Workshop',
-    date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
-    time: '10:00 AM',
-    duration: '2 hours',
-    status: 'completed',
-    type: 'in-person',
-    location: 'Golden Gate Park',
-  },
-  {
-    id: '4',
-    partnerName: 'David Kim',
-    partnerAvatar:
-      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face',
-    skill: 'React Development',
-    date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
-    time: '3:00 PM',
-    duration: '1 hour',
-    status: 'cancelled',
-    type: 'virtual',
-  },
-];
-
+import { ToastContainer, toast } from 'react-toastify';
 const Bookings = () => {
-  const [activeTab, setActiveTab] = useState('upcoming');
-  const [selectedBooking, setSelectedBooking] = useState(null);
+  const [modalBooking, setModalBooking] = useState(null);
+  const [modalAction, setModalAction] = useState(null); // "accepted" or "rejected"
+
+  const [bookings, setBookings] = useState([]);
+  const [activeTab, setActiveTab] = useState('pending');
+  const currentUserId = localStorage.getItem('userId');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchBookings();
+  }, []);
+
+  const fetchBookings = async () => {
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/bookings`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      setBookings(res.data);
+    } catch (error) {
+      console.error('Failed to fetch bookings:', error);
+    }
+  };
+
+
+const handleResponse = async (id, status) => {
+  try {
+    await axios.put(
+      `${import.meta.env.VITE_API_URL}/api/bookings/${id}`,
+      { status },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }
+    );
+    toast.success(`Booking ${status === 'accepted' ? 'accepted' : 'rejected'} successfully!`);
+    fetchBookings();
+  } catch (err) {
+    console.error('Failed to update booking status:', err);
+    toast.error('Something went wrong. Try again.');
+  }
+};
 
   const getStatusIcon = (status) => {
     switch (status) {
@@ -75,6 +64,7 @@ const Bookings = () => {
       case 'completed':
         return <CheckCircle className="h-5 w-5 text-green-500" />;
       case 'cancelled':
+      case 'rejected':
         return <XCircle className="h-5 w-5 text-red-500" />;
       default:
         return null;
@@ -83,47 +73,36 @@ const Bookings = () => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'upcoming':
+      case 'pending':
         return 'bg-blue-100 text-blue-800';
-      case 'completed':
+      case 'accepted':
         return 'bg-green-100 text-green-800';
       case 'cancelled':
+      case 'rejected':
         return 'bg-red-100 text-red-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }
   };
 
-  const formatDate = (date) => {
-    return date.toLocaleDateString('en-US', {
+  const formatDate = (dateStr) =>
+    new Date(dateStr).toLocaleDateString('en-US', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
       day: 'numeric',
     });
-  };
 
-  const filteredBookings = Booking.filter(
-    (booking) => booking.status === activeTab
-  );
+  const filteredBookings = bookings.filter((b) => b.status === activeTab);
 
-  const tabs = [
-    {
-      key: 'upcoming',
-      label: 'Upcoming',
-      count: Booking.filter((b) => b.status === 'upcoming').length,
-    },
-    {
-      key: 'completed',
-      label: 'Completed',
-      count: Booking.filter((b) => b.status === 'completed').length,
-    },
-    {
-      key: 'cancelled',
-      label: 'Cancelled',
-      count: Booking.filter((b) => b.status === 'cancelled').length,
-    },
-  ];
+const tabs = [
+  {  key: 'pending', 
+     label: 'Pending',
+     count: bookings.filter((b) => b.status === 'pending').length },
+  { key: 'accepted', label: 'Accepted', count: bookings.filter((b) => b.status === 'accepted').length },
+  { key: 'rejected', label: 'Rejected', count: bookings.filter((b) => b.status === 'rejected').length },
+];
+
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
@@ -132,6 +111,7 @@ const Bookings = () => {
         <p className="text-gray-600">Manage your skill exchange sessions</p>
       </div>
 
+      {/* Tabs */}
       <div className="mb-6">
         <div className="border-b border-gray-200">
           <nav className="-mb-px flex space-x-8">
@@ -163,6 +143,7 @@ const Bookings = () => {
         </div>
       </div>
 
+      {/* Booking List */}
       <div className="space-y-4">
         {filteredBookings.length === 0 ? (
           <div className="text-center py-12">
@@ -182,109 +163,171 @@ const Bookings = () => {
             )}
           </div>
         ) : (
-          filteredBookings.map((booking) => (
-            <div
-              key={booking.id}
-              className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <img
-                    src={booking.partnerAvatar}
-                    alt={booking.partnerName}
-                    className="w-16 h-16 rounded-full object-cover"
-                  />
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <h3 className="text-lg font-semibold text-gray-900">
-                        {booking.skill}
-                      </h3>
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
-                          booking.status
-                        )}`}
-                      >
-                        {getStatusIcon(booking.status)}
-                        <span className="ml-1 capitalize">
-                          {booking.status}
+          filteredBookings.map((booking) => {
+            const isReceiver = booking.toUser?._id === currentUserId;
+            const isSender = booking.fromUser?._id === currentUserId;
+            const partner = isSender ? booking.toUser : booking.fromUser;
+
+            return (
+              <div
+                key={booking._id}
+                className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <img
+                      src={partner?.profilePicture || 'https://via.placeholder.com/150'}
+                      alt={partner?.name || 'Partner'}
+                      className="w-16 h-16 rounded-full object-cover"
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-3 mb-2">
+                        <h3 className="text-lg font-semibold text-gray-900">
+                          {booking.skill}
+                        </h3>
+                        <span
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
+                            booking.status
+                          )}`}
+                        >
+                          {getStatusIcon(booking.status)}
+                          <span className="ml-1 capitalize">{booking.status}</span>
                         </span>
-                      </span>
-                    </div>
-                    <p className="text-gray-600 mb-1">
-                      with <span className="font-medium">{booking.partnerName}</span>
-                    </p>
-                    <div className="flex items-center space-x-4 text-sm text-gray-500">
-                      <div className="flex items-center">
-                        <Calendar className="h-4 w-4 mr-1" />
-                        {formatDate(booking.date)}
                       </div>
-                      <div className="flex items-center">
-                        <Clock className="h-4 w-4 mr-1" />
-                        {booking.time} ({booking.duration})
-                      </div>
-                      <div className="flex items-center">
-                        {booking.type === 'virtual' ? (
-                          <>
-                            <Video className="h-4 w-4 mr-1" />
-                            Virtual
-                          </>
-                        ) : (
-                          <>
-                            <User className="h-4 w-4 mr-1" />
-                            In-person
-                          </>
-                        )}
-                      </div>
-                    </div>
-                    {booking.location && (
-                      <p className="text-sm text-gray-500 mt-1">
-                        📍 {booking.location}
+                      <p className="text-gray-600 mb-1">
+                        with <span className="font-medium">{partner?.name}</span>
                       </p>
-                    )}
-                    {booking.notes && (
-                      <p className="text-sm text-gray-600 mt-2 bg-gray-50 p-2 rounded">
-                        <strong>Notes:</strong> {booking.notes}
-                      </p>
-                    )}
+                      <div className="flex items-center space-x-4 text-sm text-gray-500">
+                        <div className="flex items-center">
+                          <Calendar className="h-4 w-4 mr-1" />
+                          {formatDate(booking.date)}
+                        </div>
+                        <div className="flex items-center">
+                          <Clock className="h-4 w-4 mr-1" />
+                          {booking.time} ({booking.duration})
+                        </div>
+                        <div className="flex items-center">
+                          {booking.type === 'virtual' ? (
+                            <>
+                              <Video className="h-4 w-4 mr-1" />
+                              Virtual
+                            </>
+                          ) : (
+                            <>
+                              <User className="h-4 w-4 mr-1" />
+                              In-person
+                            </>
+                          )}
+                        </div>
+                      </div>
+                      {booking.location && (
+                        <p className="text-sm text-gray-500 mt-1">
+                          📍 {booking.location}
+                        </p>
+                      )}
+                      {booking.notes && (
+                        <p className="text-sm text-gray-600 mt-2 bg-gray-50 p-2 rounded">
+                          <strong>Notes:</strong> {booking.notes}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex flex-col space-y-2">
+
+                    {booking.status === 'pending' && isReceiver && (
+                     <div className="flex flex-col space-y-2">
+                        <button
+                          //  onClick={() => handleResponse(booking._id, 'accepted')}
+                                onClick={() => {
+                                   setModalBooking(booking);
+                                   setModalAction('accepted');
+                                   }}
+                                   className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
+                        >
+                       ✅ Accept
+                      </button>
+                      <button
+                      //  onClick={() => handleResponse(booking._id, 'rejected')}
+                            onClick={() => {
+                                setModalBooking(booking);
+                                setModalAction('rejected');
+                                  }}
+                       className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm"
+                      >
+                        ❌ Reject
+                      </button>
+                   </div>
+                   )}
+                   {/* {booking.status === 'accepted' && (
+                     <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">
+                    💬 Chat
+                    </button>
+                    )} */}
+                    {booking.status === 'accepted' && (
+                      <button
+                         onClick={() => {
+                         const partnerId = isSender ? booking.toUser._id : booking.fromUser._id;
+                          navigate(`/chat/${partnerId}`);
+                          // navigate(`user/chat`);
+
+                    }}
+                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
+                  >
+                 💬 Chat
+                </button>
+                )}
+
+
                   </div>
                 </div>
-                <div className="flex flex-col space-y-2">
-                  {booking.status === 'upcoming' && (
-                    <>
-                      <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
-                        {booking.type === 'virtual'
-                          ? 'Join Session'
-                          : 'View Details'}
-                      </button>
-                      <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm">
-                        Reschedule
-                      </button>
-                      <button className="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors text-sm">
-                        Cancel
-                      </button>
-                    </>
-                  )}
-                  {booking.status === 'completed' && (
-                    <>
-                      <button className="px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors text-sm">
-                        Leave Review
-                      </button>
-                      <button className="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-sm">
-                        Book Again
-                      </button>
-                    </>
-                  )}
-                  {booking.status === 'cancelled' && (
-                    <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm">
-                      View Details
-                    </button>
-                  )}
-                </div>
               </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
+      {/* Toast Container */}
+      <ToastContainer position="top-right" autoClose={3000} />
+{/* Confirmation Modal */}
+{modalBooking && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+      <h2 className="text-lg font-bold mb-4">
+        Are you sure you want to {modalAction} this booking?
+      </h2>
+      <p className="text-gray-600 mb-4">
+        {modalAction === 'accepted'
+          ? 'This will confirm the session.'
+          : 'This will decline the session and notify the sender.'}
+      </p>
+      <div className="flex justify-end space-x-3">
+        <button
+          onClick={() => {
+            setModalBooking(null);
+            setModalAction(null);
+          }}
+          className="px-4 py-2 bg-gray-100 text-gray-800 rounded hover:bg-gray-200"
+        >
+          Cancel
+        </button>
+        <button
+          onClick={() => {
+            handleResponse(modalBooking._id, modalAction);
+            setModalBooking(null);
+            setModalAction(null);
+          }}
+          className={`px-4 py-2 text-white rounded ${
+            modalAction === 'accepted'
+              ? 'bg-green-600 hover:bg-green-700'
+              : 'bg-red-600 hover:bg-red-700'
+          }`}
+        >
+          Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };

@@ -202,14 +202,14 @@ const Home = () => {
             </div>
 
             <div className="flex flex-col items-center space-y-4">
-              <div className="flex space-x-4">
+              {/* <div className="flex space-x-4">
                 <button onClick={handlePass} className="w-12 h-12 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center">
                   <X className="h-6 w-6 text-gray-600" />
                 </button>
                 <button onClick={handleLike} className="w-12 h-12 rounded-full bg-red-100 hover:bg-red-200 flex items-center justify-center">
                   <Heart className="h-6 w-6 text-red-500" />
                 </button>
-              </div>
+              </div> */}
 
               <button onClick={() => setShowModal(true)} className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
                 Request Session
