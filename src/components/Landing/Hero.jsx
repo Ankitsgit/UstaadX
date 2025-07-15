@@ -1,6 +1,8 @@
 import { ArrowRight, Play } from "lucide-react";
 import { Button } from "../Ui/Button";
 import hero from "../../assets/hero.png"
+import { NavLink } from "react-router-dom";
+
 
 const Hero = () => {
   return (
@@ -26,20 +28,35 @@ const Hero = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            {/* <Button 
+              size="lg" 
+              className="btn-primary shine group text-lg px-8 py-4 h-auto"
+            > 
+              Get Started
+              <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+            </Button> */}
+            <NavLink to="/user" end className={({ isActive }) => isActive ? "text-green-700" : ""}>
             <Button 
               size="lg" 
               className="btn-primary shine group text-lg px-8 py-4 h-auto"
-            >
-              Get Started
+            > 
+               Find Your Ustaad
               <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-            </Button>
-            <Button 
+            </Button>       
+           </NavLink>
+            {/* <Button 
               variant="outline" 
               size="lg" 
               className="glass-card text-lg px-8 py-4 h-auto hover:bg-white/90"
             >
               <Play className="mr-2 h-5 w-5" />
-              Watch Demo
+              Learn A Skill
+            </Button> */}
+            <Button variant="ghost" className="border-b border-black  shine group text-lg px-8 py-4 h-auto  hover:text-primary">
+              <NavLink to="/user" className={({ isActive }) => isActive ? "text-green-700" : ""}>
+                Become An Ustaad
+              </NavLink>              
+  
             </Button>
           </div>
 

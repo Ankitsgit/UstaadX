@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { LogIn, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import Register from '../Register/Register';
+import { toast } from 'react-toastify';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -19,11 +20,27 @@ const Login = () => {
       await login(email, password);
        navigate('/user');
     } catch (error) {
-      console.error('Login failed:', error);
-    } finally {
-      setLoading(false);
+      
+    if (error.response && error.response.status === 404) {
+
+      toast.error('Account not found. Please register first.');
+      console.error('Account not found. Please register first.');
+
+
+    } else if (error.response && error.response.status === 401) {
+
+      toast.error('Incorrect password. Please try again.');
+      console.error("Incorrect password. Please try again.");
+
+    } else {
+      toast.error("Something went wrong. Please try again later.")
+      console.error("Something went wrong. Please try again later.");
+
     }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen flex">

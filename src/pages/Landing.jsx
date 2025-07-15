@@ -18,7 +18,7 @@ const Landing = () => {
       <Features />
       {/* <UIPreview /> */}
       <Testimonials />
-      <CTABanner />
+      {/* <CTABanner /> */}
       <Footer />
     </div>
   );

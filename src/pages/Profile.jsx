@@ -1,5 +1,7 @@
-import { useState } from 'react';
-// import { useAuth } from '../../contexts/AuthContext';
+
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+
 import ProfileHeader from '../components/Profile/ProfileHeader';
 import ProfilePicture from '../components/Profile/ProfilePicture';
 import ProfileField from '../components/Profile/ProfileField';
@@ -8,7 +10,8 @@ import SkillsSection from '../components/Profile/SkillsSection';
 import AvailabilitySection from '../components/Profile/AvailabilitySection';
 
 const Profile = () => {
-  const  user = "Ankit"
+  const [token] = useState(localStorage.getItem('token'));
+  const [user, setUser] = useState(null);
 
   const [isEditing, setIsEditing] = useState(false);
   const [editingField, setEditingField] = useState(null);
@@ -16,18 +19,95 @@ const Profile = () => {
   const [newSkillWanted, setNewSkillWanted] = useState('');
 
   const [profileData, setProfileData] = useState({
-    name: user?.name || '',
-    bio: user?.bio || '',
-    location: user?.location || '',
-    skillsOffered: user?.skillsOffered || [],
-    skillsWanted: user?.skillsWanted || [],
+    name: '',
+    bio: '',
+    location: '',
+    skillsOffered: [],
+    skillsWanted: [],
+    availability: [],
   });
 
-  const handleSaveField = (field) => {
-    setEditingField(null);
-    // Save to backend (to be implemented)
-    console.log('Saving field:', field, profileData[field]);
+  const timeSlots = [
+    'Monday 9-11 AM', 'Monday 2-4 PM', 'Monday 6-8 PM',
+    'Tuesday 9-11 AM', 'Tuesday 2-4 PM', 'Tuesday 6-8 PM',
+    'Wednesday 9-11 AM', 'Wednesday 2-4 PM', 'Wednesday 6-8 PM',
+    'Thursday 9-11 AM', 'Thursday 2-4 PM', 'Thursday 6-8 PM',
+    'Friday 9-11 AM', 'Friday 2-4 PM', 'Friday 6-8 PM',
+    'Saturday 10 AM-12 PM', 'Saturday 2-4 PM', 'Saturday 6-8 PM',
+    'Sunday 10 AM-12 PM', 'Sunday 2-4 PM', 'Sunday 6-8 PM',
+  ];
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/users/me`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        setUser(res.data);
+        setProfileData({
+          name: res.data.name || '',
+          bio: res.data.bio || '',
+          location: res.data.location || '',
+          skillsOffered: res.data.skillsOffered || [],
+          skillsWanted: res.data.skillsWanted || [],
+          availability: res.data.availability || [],
+        });
+      } catch (err) {
+        console.error('Failed to fetch profile:', err);
+      }
+    };
+
+    fetchProfile();
+  }, [token]);
+
+  const handleSaveField = async (field) => {
+    try {
+      const updatedUser = await axios.put(
+        `${import.meta.env.VITE_API_URL}/api/users/me`,
+        { [field]: profileData[field] },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setUser(updatedUser.data);
+      setEditingField(null);
+    } catch (err) {
+      console.error('Update failed:', err);
+    }
   };
+const handleSaveAll = async () => {
+  try {
+    const res = await axios.put(
+      `${import.meta.env.VITE_API_URL}/api/users/me`,
+      profileData,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    const updated = res.data;
+
+    setUser(updated);
+    setProfileData({
+      name: updated.name || '',
+      bio: updated.bio || '',
+      location: updated.location || '',
+      skillsOffered: updated.skillsOffered || [],
+      skillsWanted: updated.skillsWanted || [],
+      availability: updated.availability || [],
+    });
+
+    setIsEditing(false);
+    setEditingField(null);
+  } catch (err) {
+    console.error('Save all failed:', err);
+  }
+};
+
 
   const addSkill = (type) => {
     const skill = type === 'offered' ? newSkillOffered : newSkillWanted;
@@ -53,29 +133,19 @@ const Profile = () => {
     }));
   };
 
-  const timeSlots = [
-    'Monday 9-11 AM', 'Monday 2-4 PM', 'Monday 6-8 PM',
-    'Tuesday 9-11 AM', 'Tuesday 2-4 PM', 'Tuesday 6-8 PM',
-    'Wednesday 9-11 AM', 'Wednesday 2-4 PM', 'Wednesday 6-8 PM',
-    'Thursday 9-11 AM', 'Thursday 2-4 PM', 'Thursday 6-8 PM',
-    'Friday 9-11 AM', 'Friday 2-4 PM', 'Friday 6-8 PM',
-    'Saturday 10 AM-12 PM', 'Saturday 2-4 PM', 'Saturday 6-8 PM',
-    'Sunday 10 AM-12 PM', 'Sunday 2-4 PM', 'Sunday 6-8 PM',
-  ];
-
-  const [selectedTimeSlots, setSelectedTimeSlots] = useState([
-    'Monday 6-8 PM', 'Wednesday 7-9 PM', 'Saturday 10 AM-12 PM',
-  ]);
-
   const toggleTimeSlot = (slot) => {
-    setSelectedTimeSlots((prev) =>
-      prev.includes(slot) ? prev.filter((s) => s !== slot) : [...prev, slot]
-    );
+    setProfileData((prev) => ({
+      ...prev,
+      availability: prev.availability.includes(slot)
+        ? prev.availability.filter((s) => s !== slot)
+        : [...prev.availability, slot],
+    }));
   };
+
+  if (!user) return <div className="p-6 text-center">Loading...</div>;
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
-      {/* Header */}
       <ProfileHeader isEditing={isEditing} setIsEditing={setIsEditing} />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -116,7 +186,10 @@ const Profile = () => {
               />
             </div>
 
-            <ProfileStats rating={user?.rating} reviewCount={user?.reviewCount} />
+            <ProfileStats
+              rating={user.rating || 4.8}
+              reviewCount={user.reviewCount || 12}
+            />
 
             <div className="border-t pt-6 mt-6 text-left">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">About Me</h3>
@@ -161,10 +234,22 @@ const Profile = () => {
 
           <AvailabilitySection
             timeSlots={timeSlots}
-            selectedSlots={selectedTimeSlots}
+            selectedSlots={profileData.availability}
             toggleSlot={toggleTimeSlot}
             isEditing={isEditing}
           />
+
+          {/* Save All Changes Button */}
+          {isEditing && (
+            <div className="text-right">
+              <button
+                onClick={handleSaveAll}
+                className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded"
+              >
+                Save All Changes
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -172,4 +257,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
