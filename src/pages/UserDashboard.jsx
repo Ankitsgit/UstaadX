@@ -288,11 +288,11 @@ const UserDashboard = () => {
               onClick={() => navigate("/")}
               className="flex items-center gap-2 cursor-pointer"
           >
-          <div className="w-9 h-9 bg-gradient-to-br from-indigo-500 to-purple-500 text-white rounded-full flex items-center justify-center font-bold text-sm">
+          <div className="text-white font-bold text-sm">
                U
           </div>
           {isSidebarOpen && (
-             <span className="font-heading font-bold text-xl text-indigo-700">
+             <span className="font-heading font-bold text-xl gradient-text">
               UstaadX
              </span>
            )}
@@ -300,7 +300,7 @@ const UserDashboard = () => {
 
 
           {/* User Avatar */}
-          <div className="mb-6 flex items-center gap-3">
+          <div className="mb-6 flex items-center gap-5">
             <img
               src={users.avatar}
               alt="User"
