@@ -9,10 +9,10 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { name: "How it Works", href: "#how-it-works" },
-    { name: "Features", href: "#features" },
-    { name: "Browse Skills", href: "Home" },
-    { name: "About", href: "#about" }
+    // { name: "How it Works", href: "#how-it-works" },
+    // { name: "Features", href: "#features" },
+    // { name: "Browse Skills", href: "Home" },
+    // { name: "About", href: "#about" }
   ];
 
   return (

@@ -56,33 +56,29 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left Illustration */}
-      <div className="hidden lg:flex flex-1 bg-gradient-to-br from-secondary to-secondary/80 items-center justify-center p-12">
-        <div className="text-center text-secondary-foreground">
-          <div className="mb-8">
-            <div className="inline-flex items-center justify-center w-32 h-32 bg-secondary-foreground/10 rounded-full mb-6">
-              <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
+    <div className="min-h-screen flex space-y-10 ">
+    <nav className="fixed top-0 left-0 right-0 z-50 glass-card border-b backdrop-blur-xl">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-primary-gradient rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm">U</span>
             </div>
+            <span className="text-xl font-heading font-bold gradient-text">UstaadX</span>
           </div>
-          <h3 className="text-3xl font-bold mb-4">Start Your Journey</h3>
-          <p className="text-xl text-secondary-foreground/80 max-w-md">
-            Share your skills, learn from others, and build meaningful connections in our growing community.
-          </p>
         </div>
       </div>
-
+    </nav>
       {/* Right Form */}
-      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div className="flex-1 flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div className="text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-secondary rounded-full mb-4">
-              <span className="text-2xl font-bold text-secondary-foreground">SS</span>
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-gradient rounded-full mb-4">
+              <span className="text-2xl font-bold text-primary-foreground">U</span>
             </div>
             <h2 className="text-3xl font-bold text-foreground">Create your account</h2>
-            <p className="mt-2 text-muted-foreground">Join SkillSwap and start exchanging knowledge today</p>
+            <p className="mt-2 text-muted-foreground">Join UstaadX and start exchanging knowledge today</p>
           </div>
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-6">
@@ -171,20 +167,20 @@ const Register = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex justify-center items-center py-3 px-4 bg-secondary hover:bg-secondary/90 text-secondary-foreground font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex justify-center items-center py-3 px-4 bg-primary-gradient hover:bg-primary/90 text-primary-foreground font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-secondary-foreground"></div>
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary-foreground"></div>
               ) : (
                 <>
                   <UserPlus className="h-5 w-5 mr-2" />
-                  Create Account
+                  Sign Up
                 </>
               )}
             </button>
 
             <div className="text-center">
-              <Link to="/login" className="text-secondary hover:text-secondary/80 font-medium">
+              <Link to="/login" className="text hover:text-blue font-medium">
                 Already have an account? Sign in
               </Link>
             </div>

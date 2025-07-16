@@ -24,36 +24,36 @@ const Features = () => {
       description: "Book sessions that work for everyone with our intelligent calendar integration",
       gradient: "from-purple-500/20 to-pink-500/20"
     },
-    {
-      icon: Users,
-      title: "Perfect Matching",
-      description: "Our AI finds the best skill exchange partners based on your interests and availability",
-      gradient: "from-green-500/20 to-emerald-500/20"
-    },
-    {
-      icon: Coins,
-      title: "Token Rewards",
-      description: "Earn tokens for teaching and use them to access premium features and courses",
-      gradient: "from-yellow-500/20 to-orange-500/20"
-    },
+    // {
+    //   icon: Users,
+    //   title: "Perfect Matching",
+    //   description: "Our AI finds the best skill exchange partners based on your interests and availability",
+    //   gradient: "from-green-500/20 to-emerald-500/20"
+    // },
+    // {
+    //   icon: Coins,
+    //   title: "Token Rewards",
+    //   description: "Earn tokens for teaching and use them to access premium features and courses",
+    //   gradient: "from-yellow-500/20 to-orange-500/20"
+    // },
     {
       icon: Heart,
       title: "Community Driven",
       description: "Join a supportive community of learners and teachers helping each other grow",
       gradient: "from-red-500/20 to-rose-500/20"
     },
-    {
-      icon: Shield,
-      title: "Safe & Verified",
-      description: "All users are verified and our platform ensures safe, respectful interactions",
-      gradient: "from-indigo-500/20 to-blue-500/20"
-    },
-    {
-      icon: Zap,
-      title: "Quick Sessions",
-      description: "Learn or teach in bite-sized 30-60 minute sessions that fit your schedule",
-      gradient: "from-violet-500/20 to-purple-500/20"
-    },
+    // {
+    //   icon: Shield,
+    //   title: "Safe & Verified",
+    //   description: "All users are verified and our platform ensures safe, respectful interactions",
+    //   gradient: "from-indigo-500/20 to-blue-500/20"
+    // },
+    // {
+    //   icon: Zap,
+    //   title: "Quick Sessions",
+    //   description: "Learn or teach in bite-sized 30-60 minute sessions that fit your schedule",
+    //   gradient: "from-violet-500/20 to-purple-500/20"
+    // },
     {
       icon: Globe,
       title: "Global Reach",

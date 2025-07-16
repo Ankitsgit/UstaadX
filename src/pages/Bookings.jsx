@@ -176,7 +176,7 @@ const tabs = [
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                     <img
-                      src={partner?.profilePicture || 'https://via.placeholder.com/150'}
+                      src={partner?.profilePicture || "https://i.pravatar.cc/100"}
                       alt={partner?.name || 'Partner'}
                       className="w-16 h-16 rounded-full object-cover"
                     />
