@@ -16,7 +16,7 @@ const Landing = () => {
       <Navbar />
       <Hero />
       {/* <Explore /> */}
-      {/* <HowItWorks /> */}
+      <HowItWorks />
       {/* <Features /> */}
       {/* <UIPreview /> */}
       {/* <Testimonials /> */}

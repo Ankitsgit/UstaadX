@@ -3,7 +3,7 @@
 import React from 'react';
 import { Routes, Route } from "react-router-dom";
 
-import Landing from './pages/landing';
+import Landing from './pages/Landing';
 import Home from './components/UserDashboard.jsx/Home';
 import UserDashboard from './pages/UserDashboard';
 import Chat from './pages/Chat';
