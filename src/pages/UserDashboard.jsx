@@ -279,10 +279,16 @@ const UserDashboard = () => {
             className="bg-gray-900 px-6 py-4 flex items-center space-x-3 cursor-pointer"
             onClick={() => navigate("/")}
           >
-            <div className="bg-blue-600 w-8 h-8 rounded-full flex items-center justify-center">
+            {/* <div className="bg-blue-600 w-8 h-8 rounded-full flex items-center justify-center">
               <span className="text-white font-bold text-sm">U</span>
             </div>
-            <span className="text-white font-semibold text-lg">UstaadX</span>
+            <span className="text-white font-semibold text-lg">UstaadX</span> */}
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-primary-gradient rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm">U</span>
+            </div>
+            <span className="text-xl font-heading font-bold gradient-text">UstaadX</span>
+          </div>
           </div>
            
           {/* Profile Info */}
