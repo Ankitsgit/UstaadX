@@ -209,7 +209,7 @@ const tabs = [
                         </div> */}
                         <div className="flex items-center">
                           <Clock className="h-4 w-4 mr-1" />
-                          {booking.timeslot}
+                          {booking.timeslot} ({booking.timeslot})
                         </div>
                         <div className="flex items-center">
                           {booking.type === 'virtual' ? (
