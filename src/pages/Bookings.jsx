@@ -209,7 +209,7 @@ const tabs = [
                         </div>
                         <div className="flex items-center">
                           <Clock className="h-4 w-4 mr-1" />
-                          {booking.time} ({booking.duration})
+                          {booking.time} ({booking.timeSlot})
                         </div>
                         <div className="flex items-center">
                           {booking.type === 'virtual' ? (
@@ -230,9 +230,9 @@ const tabs = [
                           📍 {booking.location}
                         </p>
                       )}
-                      {booking.notes && (
+                      {booking.message && (
                         <p className="text-sm text-gray-600 mt-2 bg-gray-50 p-2 rounded">
-                          <strong>Notes:</strong> {booking.notes}
+                          <strong>Notes:</strong> {booking.message}
                         </p>
                       )}
                     </div>
