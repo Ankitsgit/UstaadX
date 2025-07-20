@@ -202,8 +202,8 @@ const tabs = [
                         )}
                       </p>
 
-                      {/* <div className="flex items-center space-x-4 text-sm text-gray-500">
-                        <div className="flex items-center">
+                      <div className="flex items-center space-x-4 text-sm text-gray-500">
+                        {/* <div className="flex items-center">
                           <Calendar className="h-4 w-4 mr-1" />
                           {formatDate(booking.date)}
                         </div> */}
