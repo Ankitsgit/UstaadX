@@ -194,8 +194,8 @@ const tabs = [
                           <span className="ml-1 capitalize">{booking.status}</span>
                         </span>
                       </div>
-                      <p className="text-gray-600 mb-1">
-                        with <span className="font-medium">{partner?.name}</span>
+                      <p className="text-gray-b-600 mb-1">
+                        Requested by <span className="font-medium">{partner?.name}</span>
                       </p>
                       <div className="flex items-center space-x-4 text-sm text-gray-500">
                         <div className="flex items-center">
