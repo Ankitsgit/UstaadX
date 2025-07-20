@@ -30,7 +30,9 @@ const Bookings = () => {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
+        
       });
+      console.log(res)
       setBookings(res.data);
     } catch (error) {
       console.error('Failed to fetch bookings:', error);
@@ -176,7 +178,7 @@ const tabs = [
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
                     <img
-                      src={partner?.profilePicture || "https://i.pravatar.cc/100"}
+                      src={partner?.profileImage ? `${import.meta.env.VITE_API_URL}${partner.profileImage}` : "/default-profile.png" || "https://i.pravatar.cc/100"}
                       alt={partner?.name || 'Partner'}
                       className="w-16 h-16 rounded-full object-cover"
                     />

@@ -152,7 +152,19 @@ const handleSaveAll = async () => {
         {/* Left Column */}
         <div className="lg:col-span-1">
           <div className="bg-white rounded-xl shadow-sm p-6 text-center">
-            <ProfilePicture user={user} isEditing={isEditing} />
+            {/* <ProfilePicture user={user} isEditing={isEditing} /> */}
+            <ProfilePicture
+              user={user}
+              isEditing={isEditing}
+              onUploadComplete={(imageUrl) => {
+                // Update user object so it re-renders everywhere
+               setUser((prev) => ({
+                  ...prev,
+                 profileImage: imageUrl,
+               }));
+             }}
+           />
+
 
             <div className="mt-4">
               <ProfileField

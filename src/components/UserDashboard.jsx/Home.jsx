@@ -24,11 +24,12 @@ const Home = () => {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         });
-
+        
         const otherUsers = res.data.filter(
           (user) => String(user._id) !== String(currentUserId)
         );
-
+        // console.log(otherUsers)
+        // const profilePicture =otherUsers.profileImage ? `${import.meta.env.VITE_API_URL}${user.profileImage}` : "/default-profile.png"
         setMatches(otherUsers);
         setCurrentIndex(0); // Reset index
       } catch (err) {
@@ -37,7 +38,7 @@ const Home = () => {
     };
 
     fetchUsers();
-  }, [currentUserId]);
+  }, [currentUserId,]);
 
   // Filtered matches based on searchTerm
   const filteredMatches = matches.filter((user) => {
@@ -145,7 +146,7 @@ const Home = () => {
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
           <div className="relative h-96">
             <img
-              src={currentMatch.profilePicture || "https://i.pravatar.cc/100"}
+              src={currentMatch.profileImage ? `${import.meta.env.VITE_API_URL}${currentMatch.profileImage}` : "/default-profile.png" || "https://i.pravatar.cc/100"}
               alt={currentMatch.name}
               className="w-full h-full object-cover"
             />
